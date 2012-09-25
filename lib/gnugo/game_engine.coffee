@@ -4,7 +4,7 @@ BufferStream = require "bufferstream"
 CommandResponse = require "./command_response"
 IdGenerator = require "./id_generator"
 
-class Game
+class GameEngine
   constructor: ->
     @idGenerator = new IdGenerator
     @pendingResponses = {}
@@ -39,4 +39,4 @@ class Game
   stop: ->
     @gnugo.stdin.end()
 
-module.exports = Game
+module.exports = GameEngine
