@@ -1,0 +1,17 @@
+{
+  "name": "gnugo-node",
+  "description": "tcp wrapper for gnugo",
+  "version": "0.0.1",
+  "author": "drew (drew@drewolson.org)",
+  "directories" : {
+    "lib" : "./lib"
+  },
+  "main" : "./lib/index.js",
+  "dependencies": {
+    "coffee-script": "1.3.3",
+    "bufferstream": "0.5.1"
+  },
+  "devDependencies": {
+    "mocha": "1.5.0"
+  }
+}
