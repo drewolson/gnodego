@@ -22,6 +22,14 @@ class Game
     @pendingResponses[id] = cb
     @gnugo.stdin.write "#{id} #{command}\n"
 
+  performCommands: (commands, cb) ->
+    @performCommand commands[0], (err, data) =>
+      rest = commands[1..-1]
+      if rest.length is 0
+        cb err, data
+      else
+        @performCommands(rest, cb)
+
   start: ->
     @gnugo = childProcess.spawn "/usr/bin/env", ["gnugo", "--mode", "gtp"]
     @outputStream = new BufferStream {size: "flexible"}

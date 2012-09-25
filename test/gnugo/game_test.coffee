@@ -11,13 +11,19 @@ describe Game, ->
         assert.equal data, "2"
         done()
 
+  describe "performCommands", ->
+    it "works with a single command", (done) ->
+      game = new Game
+      game.start()
+
+      game.performCommands ["protocol_version"], (err, data) ->
+        assert.equal data, "2"
+        done()
+
     it "plays a game of go", (done) ->
       game = new Game
       game.start()
-      game.performCommand "boardsize 9", (err, data) ->
-        game.performCommand "play black c3", (err, data) ->
-          game.performCommand "play white c6", (err, data) ->
-            game.performCommand "move_history", (err, data) ->
-              assert.equal data, "white C6\nblack C3"
-              done()
 
+      game.performCommands ["boardsize 9", "play black c3", "play white c6", "move_history"], (err, data) ->
+        assert.equal data, "white C6\nblack C3"
+        done()
