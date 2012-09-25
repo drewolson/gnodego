@@ -15,7 +15,7 @@ class Game
 
     if receiver?
       delete @pendingResponses[response.commandId()]
-      receiver response.error(), response.data()
+      receiver response.errorMessage(), response.data()
 
   performCommand: (command, cb) ->
     id = @idGenerator.next()

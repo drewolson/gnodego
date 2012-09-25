@@ -9,4 +9,5 @@ game.performCommand "showboard", (err, data) ->
   else
     console.log data
 
+
   game.stop()
