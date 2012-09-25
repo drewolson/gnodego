@@ -2,31 +2,10 @@ assert = require "assert"
 Game = require "../../lib/gnugo/game"
 
 describe Game, ->
-  describe "sendCommand", ->
-    it "handles the showboard command", ->
+  describe "performCommand", ->
+    it "returns the result of calling a command", (done) ->
       game = new Game
       game.start()
-      game.performCommand "showboard", (err, data) ->
-        assert.equal data, "
-   A B C D E F G H J K L M N O P Q R S T
-19 . . . . . . . . . . . . . . . . . . . 19
-18 . . . . . . . . . . . . . . . . . . . 18
-17 . . . . . . . . . . . . . . . . . . . 17
-16 . . . + . . . . . + . . . . . + . . . 16
-15 . . . . . . . . . . . . . . . . . . . 15
-14 . . . . . . . . . . . . . . . . . . . 14
-13 . . . . . . . . . . . . . . . . . . . 13
-12 . . . . . . . . . . . . . . . . . . . 12
-11 . . . . . . . . . . . . . . . . . . . 11     WHITE (O) has captured 0 stones
-10 . . . + . . . . . + . . . . . + . . . 10     BLACK (X) has captured 0 stones
- 9 . . . . . . . . . . . . . . . . . . . 9
- 8 . . . . . . . . . . . . . . . . . . . 8
- 7 . . . . . . . . . . . . . . . . . . . 7
- 6 . . . . . . . . . . . . . . . . . . . 6
- 5 . . . . . . . . . . . . . . . . . . . 5
- 4 . . . + . . . . . + . . . . . + . . . 4
- 3 . . . . . . . . . . . . . . . . . . . 3
- 2 . . . . . . . . . . . . . . . . . . . 2
- 1 . . . . . . . . . . . . . . . . . . . 1
-   A B C D E F G H J K L M N O P Q R S T
-        ".strip()
+      game.performCommand "version", (err, data) ->
+        assert.equal data, "3.8"
+        done()

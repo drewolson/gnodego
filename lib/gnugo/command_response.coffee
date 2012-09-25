@@ -1,14 +1,13 @@
 class CommandResponse
   constructor: (rawResponse) ->
-    rawResponse = rawResponse.toString()
-    @lines = rawResponse.split "\n"
+    @rawResponse = rawResponse.toString()
 
   commandId: ->
-    @lines[0][1]
+    @headers().commandId
 
   data: ->
     if @isSuccess()
-      @lines[1..-1].join "\n"
+      @rawResponse.split(" ")[1..-1].join(" ")
     else
       null
 
@@ -19,7 +18,19 @@ class CommandResponse
       words = @lines[0].split " "
       words[1..-1].join " "
 
+  headers: ->
+    headerString = @rawResponse.split(" ")[0]
+
+    {
+      successFlag: headerString[0],
+      commandId: headerString[1..-1]
+    }
+
   isSuccess: ->
-    @lines[0][0] is "="
+    @headers().successFlag is "="
+
+  lines: ->
+    rawWithoutHeaders = @rawResponse.split(" ")[1..-1].join " ".strip
+    raw.split "\n"
 
 module.exports = CommandResponse
