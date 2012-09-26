@@ -8,4 +8,6 @@ class MockedEngine extends GameEngine
     @commands.push command
     cb null, "success"
 
+  start: -> null
+
 module.exports = MockedEngine

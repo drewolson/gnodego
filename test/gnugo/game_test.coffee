@@ -12,6 +12,16 @@ describe Game, ->
       white: "william"
       engine: @engine
 
+  describe "integration", ->
+    it "plays a game", ->
+      game = new Game
+        black: "william"
+        white: "drew"
+
+      game.play "C4", (err, response) ->
+        game.play "C6", (err, response) ->
+          assert.ok not err?
+
   describe "activePlayer", ->
     it "starts as black", ->
       assert.equal @game.activePlayer(), "drew"

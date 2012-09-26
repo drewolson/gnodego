@@ -3,6 +3,8 @@ GameEngine = require "./game_engine"
 class Game
   constructor: ({black: black, white: white, engine: engine}) ->
     @engine = engine or new GameEngine
+    @engine.start()
+
     @players =
       black: black
       white: white
