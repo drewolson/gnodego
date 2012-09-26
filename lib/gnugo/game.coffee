@@ -1,10 +1,9 @@
 GameEngine = require "./game_engine"
 
 class Game
-  constructor: ({black: black, white: white, engine: engine}) ->
+  constructor: ({black: black, white: white, engine: engine, boardSize: boardSize}) ->
     @engine = engine or new GameEngine
-    @engine.start()
-
+    @boardSize = boardSize or 9
     @players =
       black: black
       white: white
@@ -20,7 +19,12 @@ class Game
 
   showBoard: (cb) ->
     @engine.performCommand "showboard", (err, data) ->
-      cb data
+      cb null, data
+
+  start: (cb) ->
+    @engine.start()
+    @engine.performCommands ["boardsize #{@boardSize}", "showboard"], (err, data) ->
+      cb null, data
 
   activePlayer: ->
     @players[@activeColor]

@@ -18,9 +18,29 @@ describe Game, ->
         black: "william"
         white: "drew"
 
-      game.play "C4", (err, response) ->
-        game.play "C6", (err, response) ->
-          assert.ok not err?
+      game.start (err, response) ->
+        game.play "C4", (err, response) ->
+          game.play "C6", (err, response) ->
+            assert.ok not err?
+
+  describe "start", ->
+    it "sets the board size to default", ->
+      @game.start (err, response) =>
+        assert.ok "boardsize 9" in @engine.commands
+
+    it "shows the board", ->
+      @game.start (err, response) =>
+        assert.ok "showboard" in @engine.commands
+
+    it "sets the board size based on options", ->
+      game = new Game
+        black: "drew"
+        white: "william"
+        engine: @engine
+        boardSize: 19
+
+      game.start (err, response) =>
+        assert.ok "boardsize 19" in @engine.commands
 
   describe "activePlayer", ->
     it "starts as black", ->
@@ -28,7 +48,7 @@ describe Game, ->
 
   describe "showBoard", ->
     it "asks the engine to show the board", (done) ->
-      @game.showBoard (response) =>
+      @game.showBoard (err, response) =>
         assert.ok "showboard" in @engine.commands
         done()
 
