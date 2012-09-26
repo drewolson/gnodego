@@ -1,18 +1,8 @@
 assert = require "assert"
-GameEngine = require "../../lib/gnugo/game_engine"
+
 Game = require "../../lib/gnugo/game"
-
-class MockedEngine extends GameEngine
-  constructor: ->
-    @commands = []
-
-  performCommand: (command, cb) ->
-    @commands.push command
-    cb null, "success"
-
-class MockedFailureEngine extends MockedEngine
-  performCommand: (command, cb) ->
-    cb "error", null
+MockedEngine = require "../support/mocked_engine"
+MockedFailureEngine = require "../support/mocked_failure_engine"
 
 describe Game, ->
   beforeEach ->
