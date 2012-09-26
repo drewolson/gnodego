@@ -1,7 +1,8 @@
 assert = require "assert"
+GameEngine = require "../../lib/gnugo/game_engine"
 Game = require "../../lib/gnugo/game"
 
-class MockedEngine
+class MockedEngine extends GameEngine
   constructor: ->
     @commands = []
 
@@ -35,6 +36,11 @@ describe Game, ->
       it "toggles the active player", (done) ->
         @game.play "C6", (response) =>
           assert.equal @game.activePlayer(), "william"
+          done()
+
+      it "shows the board", (done) ->
+        @game.play "C6", (response) =>
+          assert.ok "showboard" in @engine.commands
           done()
 
     context "engine rejects command", ->

@@ -9,7 +9,7 @@ class Game
     @activeColor = "black"
 
   play: (position, cb) ->
-    @engine.performCommand "play #{@activeColor} #{position}", (err, data) =>
+    @engine.performCommands ["play #{@activeColor} #{position}", "showboard"], (err, data) =>
       if err?
         cb err
       else
