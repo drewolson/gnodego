@@ -7,7 +7,7 @@ class MockedEngine
 
   performCommand: (command, cb) ->
     @commands.push command
-    cb null, "Success"
+    cb null, "success"
 
 class MockedFailureEngine extends MockedEngine
   performCommand: (command, cb) ->
@@ -48,4 +48,9 @@ describe Game, ->
       it "does not toggle the active player", (done) ->
         @game.play "C6", (response) =>
           assert.equal @game.activePlayer(), "drew"
+          done()
+
+      it "returns the error to the player", (done) ->
+        @game.play "C6", (response) =>
+          assert.equal response, "error"
           done()
