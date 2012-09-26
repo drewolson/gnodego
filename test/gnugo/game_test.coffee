@@ -26,6 +26,12 @@ describe Game, ->
     it "starts as black", ->
       assert.equal @game.activePlayer(), "drew"
 
+  describe "showBoard", ->
+    it "asks the engine to show the board", (done) ->
+      @game.showBoard (response) =>
+        assert.ok "showboard" in @engine.commands
+        done()
+
   describe "play", ->
     it "sends a move to the engine", (done) ->
       @game.play "C6", (response) =>

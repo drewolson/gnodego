@@ -18,6 +18,10 @@ class Game
         @activeColor = if @activeColor is "black" then "white" else "black"
         cb data
 
+  showBoard: (cb) ->
+    @engine.performCommand "showboard", (err, data) ->
+      cb data
+
   activePlayer: ->
     @players[@activeColor]
 
