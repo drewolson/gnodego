@@ -8,7 +8,7 @@ describe "GameEngine", ->
       engine.start()
 
       engine.performCommand "protocol_version", (err, data) ->
-        assert.equal data, "2"
+        assert.equal "2", data
         done()
 
   describe "performCommands", ->
@@ -17,7 +17,7 @@ describe "GameEngine", ->
       engine.start()
 
       engine.performCommands ["protocol_version"], (err, data) ->
-        assert.equal data, "2"
+        assert.equal "2", data
         done()
 
     it "plays a game of go", (done) ->
@@ -25,5 +25,5 @@ describe "GameEngine", ->
       engine.start()
 
       engine.performCommands ["boardsize 9", "play black c3", "play white c6", "move_history"], (err, data) ->
-        assert.equal data, "white C6\nblack C3"
+        assert.equal "white C6\nblack C3", data
         done()
