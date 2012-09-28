@@ -5,11 +5,16 @@ helper = require "../test_helper"
 
 describe "GameServer", ->
   describe "integration", ->
-    it "asks for your name once connected", (done) ->
+    it "asks for your name once connected then waits for a match", (done) ->
       helper.withServer (server, port) ->
         socket = new net.Socket
-        socket.on "data", (data) ->
+        socket.once "data", (data) ->
           assert.equal "Please enter your name: ", data
-          done()
+
+          socket.once "data", (data) ->
+            assert.equal "Thanks Drew, we're waiting to match you with the next player.", data
+            done()
+
+          socket.write "Drew"
 
         socket.connect port
