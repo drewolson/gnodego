@@ -9,6 +9,9 @@ class Game
       white: white
     @activeColor = "black"
 
+  activePlayer: ->
+    @players[@activeColor]
+
   play: (position, cb) ->
     @engine.performCommands ["play #{@activeColor} #{position}", "showboard"], (err, data) =>
       if err?
@@ -26,7 +29,7 @@ class Game
     @engine.performCommands ["boardsize #{@boardSize}", "showboard"], (err, data) ->
       cb null, data
 
-  activePlayer: ->
-    @players[@activeColor]
+  stop: ->
+    @engine.stop()
 
 module.exports = Game

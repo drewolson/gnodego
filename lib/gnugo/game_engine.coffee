@@ -31,10 +31,12 @@ class GameEngine
         @performCommands(rest, cb)
 
   start: ->
+    bufferStream = new BufferStream
+      size: "flexible"
+    bufferStream.split "\n\n", @handleResponse
+
     @gnugo = childProcess.spawn "/usr/bin/env", ["gnugo", "--mode", "gtp"]
-    @outputStream = new BufferStream {size: "flexible"}
-    @outputStream.split "\n\n", @handleResponse
-    @gnugo.stdout.pipe @outputStream
+    @gnugo.stdout.pipe bufferStream
 
   stop: ->
     @gnugo.stdin.end()
