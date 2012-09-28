@@ -21,11 +21,11 @@ class GameServer
     player = new Player socket, name
 
     if @unmatchedPlayers.length > 0
-      opponenet = @unmatchedPlayers.pop()
+      opponent = @unmatchedPlayers.pop()
       @games.push new Game
-        black: opponenet
+        black: opponent
         white: player
-      socket.write "Thanks #{name}, you've been matched with #{opponenet.name}."
+      socket.write "Thanks #{name}, you've been matched with #{opponent.name}."
     else
       @unmatchedPlayers.push player
       socket.write "Thanks #{name}, we're waiting to match you with the next player."
