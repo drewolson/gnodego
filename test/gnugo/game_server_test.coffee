@@ -11,10 +11,9 @@ describe "GameServer", ->
         socket.once "data", (data) ->
           assert.equal "Please enter your name: ", data
 
+          socket.write "Drew"
           socket.once "data", (data) ->
             assert.equal "Thanks Drew, we're waiting to match you with the next player.", data
             done()
-
-          socket.write "Drew"
 
         socket.connect port
