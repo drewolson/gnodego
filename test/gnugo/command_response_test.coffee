@@ -1,7 +1,7 @@
 assert = require "assert"
 CommandResponse = require "../../lib/gnugo/command_response"
 
-describe CommandResponse, ->
+describe "CommandResponse", ->
   describe "isSuccess", ->
     it "checks first character for success", ->
       response = new CommandResponse "=1 3.8"

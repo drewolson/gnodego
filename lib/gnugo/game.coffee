@@ -2,12 +2,12 @@ GameEngine = require "./game_engine"
 
 class Game
   constructor: ({black: black, white: white, engine: engine, boardSize: boardSize}) ->
-    @engine = engine or new GameEngine
+    @activeColor = "black"
     @boardSize = boardSize or 9
+    @engine = engine or new GameEngine
     @players =
       black: black
       white: white
-    @activeColor = "black"
 
   activePlayer: ->
     @players[@activeColor]

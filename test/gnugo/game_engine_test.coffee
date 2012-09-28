@@ -1,7 +1,7 @@
 assert = require "assert"
 GameEngine = require "../../lib/gnugo/game_engine"
 
-describe GameEngine, ->
+describe "GameEngine", ->
   describe "performCommand", ->
     it "returns the result of calling a command", (done) ->
       engine = new GameEngine

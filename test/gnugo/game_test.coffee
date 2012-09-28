@@ -4,7 +4,7 @@ Game = require "../../lib/gnugo/game"
 MockedEngine = require "../support/mocked_engine"
 MockedFailureEngine = require "../support/mocked_failure_engine"
 
-describe Game, ->
+describe "Game", ->
   beforeEach ->
     @engine = new MockedEngine
     @game = new Game
