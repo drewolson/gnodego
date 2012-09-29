@@ -22,10 +22,12 @@ class GameServer
 
     if @unmatchedPlayers.length > 0
       opponent = @unmatchedPlayers.pop()
-      @games.push new Game
+      game = new Game
         black: opponent
         white: player
+      @games.push game
       socket.write "Thanks #{name}, you've been matched with #{opponent.name}."
+      game.start()
     else
       @unmatchedPlayers.push player
       socket.write "Thanks #{name}, we're waiting to match you with the next player."

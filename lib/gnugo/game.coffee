@@ -12,12 +12,18 @@ class Game
   activePlayer: ->
     @players[@activeColor]
 
+  broadcast: (message) ->
+    for color, player of @players
+      player.tell message
+
   play: (position, cb) ->
     @engine.performCommands ["play #{@activeColor} #{position}", "showboard"], (err, data) =>
       if err?
+        @activePlayer().tell(err)
         cb err
       else
         @activeColor = if @activeColor is "black" then "white" else "black"
+        @broadcast data
         cb data
 
   showBoard: (cb) ->
@@ -25,9 +31,11 @@ class Game
       cb null, data
 
   start: (cb) ->
+    @broadcast "The match between #{@players["black"].name} (black) and #{@players["white"].name} (white) has begun!"
     @engine.start()
-    @engine.performCommands ["boardsize #{@boardSize}", "showboard"], (err, data) ->
-      cb null, data
+    @engine.performCommands ["boardsize #{@boardSize}", "showboard"], (err, data) =>
+      @broadcast data
+      cb null, data if cb?
 
   stop: ->
     @engine.stop()
