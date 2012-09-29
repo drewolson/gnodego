@@ -17,7 +17,7 @@ class Game
       player.tell message
 
   listenForPlay: ->
-    @activePlayer().once 'play', @onPlay
+    @activePlayer().once "play", @onPlay
 
   onPlay: (move) =>
     @play move, (err, data) ->
@@ -25,7 +25,7 @@ class Game
   play: (position, cb) ->
     @engine.performCommands ["play #{@activeColor} #{position}", "showboard"], (err, data) =>
       if err?
-        @activePlayer().tell(err)
+        @activePlayer().tell err
         @listenForPlay()
         cb err, null
       else
