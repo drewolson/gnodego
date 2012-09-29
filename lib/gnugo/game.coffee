@@ -16,15 +16,23 @@ class Game
     for color, player of @players
       player.tell message
 
+  listenForPlay: ->
+    @activePlayer().once 'play', @onPlay
+
+  onPlay: (move) =>
+    @play move, (err, data) ->
+
   play: (position, cb) ->
     @engine.performCommands ["play #{@activeColor} #{position}", "showboard"], (err, data) =>
       if err?
         @activePlayer().tell(err)
-        cb err
+        @listenForPlay()
+        cb err, null
       else
         @activeColor = if @activeColor is "black" then "white" else "black"
         @broadcast data
-        cb data
+        @listenForPlay()
+        cb null, data
 
   showBoard: (cb) ->
     @engine.performCommand "showboard", (err, data) ->
@@ -35,6 +43,7 @@ class Game
     @engine.start()
     @engine.performCommands ["boardsize #{@boardSize}", "showboard"], (err, data) =>
       @broadcast data
+      @listenForPlay()
       cb null, data if cb?
 
   stop: ->

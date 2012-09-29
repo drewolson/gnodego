@@ -47,6 +47,10 @@ describe "Game", ->
       game.start (err, response) =>
         assert.ok "boardsize 19" in @engine.commands
 
+    it "sets a listener on the black player play event", ->
+      @game.start (err, response) =>
+        assert.deepEqual ['play', @game.onPlay], @drew.listeners[0]
+
   describe "activePlayer", ->
     it "starts as black", ->
       assert.equal @game.activePlayer(), @drew
@@ -56,6 +60,11 @@ describe "Game", ->
       @game.showBoard (err, response) =>
         assert.ok "showboard" in @engine.commands
         done()
+
+  describe "onPlay", ->
+    it "calls play with the events payload", ->
+      @game.onPlay "C6", (response) =>
+        assert.ok "play black C6" in @engine.commands
 
   describe "play", ->
     it "sends a move to the engine", (done) ->
@@ -76,6 +85,10 @@ describe "Game", ->
           assert.ok "success" in @william.messages
           done()
 
+      it "sets a listener on the new active player", ->
+        @game.play "C6", (response) =>
+          assert.deepEqual ['play', @game.onPlay], @william.listeners[0]
+
     context "engine rejects command", ->
       beforeEach ->
         @engine = new MockedFailureEngine
@@ -93,3 +106,7 @@ describe "Game", ->
         @game.play "C6", (response) =>
           assert.ok response in @game.activePlayer().messages
           done()
+
+      it "relistens to the active player", ->
+        @game.play "C6", (response) =>
+          assert.deepEqual ["play", @game.onPlay], @drew.listeners[0]
