@@ -3,6 +3,7 @@ GameEngine = require "./game_engine"
 class Game
   constructor: ({black: black, white: white, engine: engine, boardSize: boardSize}) ->
     @activeColor = "black"
+    @inactiveColor = "white"
     @boardSize = boardSize or 9
     @engine = engine or new GameEngine
     @players =
@@ -12,6 +13,9 @@ class Game
   activePlayer: ->
     @players[@activeColor]
 
+  inactivePlayer: ->
+    @players[@inactiveColor]
+
   broadcast: (message) ->
     for color, player of @players
       player.tell message
@@ -19,6 +23,7 @@ class Game
   listenForPlay: ->
     @activePlayer().once "play", @onPlay
     @activePlayer().prompt "Please select a move: "
+    @inactivePlayer().tell "Your opponent is selecting a move."
 
   onPlay: (move) =>
     @play move, (err, data) ->
@@ -30,7 +35,7 @@ class Game
         @listenForPlay()
         cb err, null
       else
-        @activeColor = if @activeColor is "black" then "white" else "black"
+        @togglePlayers()
         @broadcast data
         @listenForPlay()
         cb null, data
@@ -49,5 +54,9 @@ class Game
 
   stop: ->
     @engine.stop()
+
+  togglePlayers: ->
+    @activeColor = if @activeColor is "black" then "white" else "black"
+    @inactiveColor = if @inactiveColor is "black" then "white" else "black"
 
 module.exports = Game

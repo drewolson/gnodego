@@ -55,6 +55,10 @@ describe "Game", ->
     it "starts as black", ->
       assert.equal @game.activePlayer(), @drew
 
+  describe "inactivePlayer", ->
+    it "starts as white", ->
+      assert.equal @game.inactivePlayer(), @william
+
   describe "showBoard", ->
     it "asks the engine to show the board", (done) ->
       @game.showBoard (err, response) =>
@@ -75,6 +79,10 @@ describe "Game", ->
       @game.listenForPlay()
       assert.ok "Please select a move: " in @drew.messages
 
+    it "tells the inactive player to wait for their opponent", ->
+      @game.listenForPlay()
+      assert.ok "Your opponent is selecting a move." in @william.messages
+
   describe "play", ->
     it "sends a move to the engine", (done) ->
       @game.play "C6", (response) =>
@@ -85,6 +93,7 @@ describe "Game", ->
       it "toggles the active player", (done) ->
         @game.play "C6", (response) =>
           assert.equal @game.activePlayer(), @william
+          assert.equal @game.inactivePlayer(), @drew
           done()
 
       it "shows the board", (done) ->
@@ -109,6 +118,7 @@ describe "Game", ->
       it "does not toggle the active player", (done) ->
         @game.play "C6", (response) =>
           assert.equal @game.activePlayer(), @drew
+          assert.equal @game.inactivePlayer(), @william
           done()
 
       it "returns the error to the player", (done) ->
