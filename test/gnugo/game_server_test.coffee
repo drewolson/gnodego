@@ -64,8 +64,7 @@ describe "GameServer", ->
             socket.write "Drew\n"
             socket.once "data", (data) ->
               socket.once "data", (data) ->
-                welcomeBroadcast = "
-The match between William (black) and Drew (white) has begun!"
+                welcomeBroadcast = "The match between William (black) and Drew (white) has begun!"
                 boardState = "
   A B C D E F G H J
 9 . . . . . . . . . 9
