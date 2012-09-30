@@ -16,7 +16,7 @@ class GameServer
   onConnect: (socket) =>
     player = new Player socket
     socket.once "data", (data) => @onName player, data.toString().trim()
-    player.tell "Please enter your name: "
+    player.prompt "Please enter your name: "
 
   onName: (player, name) ->
     player.name = name

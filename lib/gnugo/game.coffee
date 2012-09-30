@@ -18,6 +18,7 @@ class Game
 
   listenForPlay: ->
     @activePlayer().once "play", @onPlay
+    @activePlayer().prompt "Please select a move: "
 
   onPlay: (move) =>
     @play move, (err, data) ->

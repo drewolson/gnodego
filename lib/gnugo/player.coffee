@@ -6,6 +6,9 @@ class Player extends events.EventEmitter
       @emit "play", data
 
   tell: (message) ->
-    @socket.write "#{message}\n\n"
+    @prompt "#{message}\n\n"
+
+  prompt: (message) ->
+    @socket.write message
 
 module.exports = Player

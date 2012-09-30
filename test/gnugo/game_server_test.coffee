@@ -10,7 +10,7 @@ describe "GameServer", ->
       helper.withServer (server, port) ->
         socket = new net.Socket
         socket.once "data", (data) ->
-          assert.equal "Please enter your name: \n\n", data.toString()
+          assert.equal "Please enter your name: ", data.toString()
 
           socket.write "Drew\n"
           socket.once "data", (data) ->
@@ -24,7 +24,7 @@ describe "GameServer", ->
         helper.withServer (server, port) ->
           socket = new net.Socket
           socket.once "data", (data) ->
-            assert.equal "Please enter your name: \n\n", data.toString()
+            assert.equal "Please enter your name: ", data.toString()
 
             socket.write "Drew\n"
             socket.once "data", (data) ->
@@ -40,7 +40,7 @@ describe "GameServer", ->
 
           socket = new net.Socket
           socket.once "data", (data) ->
-            assert.equal "Please enter your name: \n\n", data.toString()
+            assert.equal "Please enter your name: ", data.toString()
 
             socket.write "Drew\n"
             socket.once "data", (data) ->

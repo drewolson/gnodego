@@ -20,8 +20,8 @@ describe "Game", ->
   describe "integration", ->
     it "plays a game", ->
       game = new Game
-        black: @william
-        white: @drew
+        black: @drew
+        white: @william
 
       game.start (err, response) ->
         game.play "C4", (err, response) ->
@@ -65,6 +65,15 @@ describe "Game", ->
     it "calls play with the events payload", ->
       @game.onPlay "C6", (response) =>
         assert.ok "play black C6" in @engine.commands
+
+  describe "listenForPlay", ->
+    it "sets a listener on the new active player", ->
+      @game.listenForPlay()
+      assert.deepEqual ['play', @game.onPlay], @drew.listeners[0]
+
+    it "tells the active player it is their move", ->
+      @game.listenForPlay()
+      assert.ok "Please select a move: " in @drew.messages
 
   describe "play", ->
     it "sends a move to the engine", (done) ->
