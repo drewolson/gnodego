@@ -14,11 +14,12 @@ class GameServer
       return player if player.name is name
 
   onConnect: (socket) =>
-    socket.once "data", (data) => @onName socket, data.toString().trim()
-    socket.write "Please enter your name: "
+    player = new Player socket
+    socket.once "data", (data) => @onName player, data.toString().trim()
+    player.tell "Please enter your name: "
 
-  onName: (socket, name) ->
-    player = new Player socket, name
+  onName: (player, name) ->
+    player.name = name
 
     if @unmatchedPlayers.length > 0
       opponent = @unmatchedPlayers.pop()
@@ -26,11 +27,11 @@ class GameServer
         black: opponent
         white: player
       @games.push game
-      socket.write "Thanks #{name}, you've been matched with #{opponent.name}."
+      player.tell "Thanks #{name}, you've been matched with #{opponent.name}."
       game.start()
     else
       @unmatchedPlayers.push player
-      socket.write "Thanks #{name}, we're waiting to match you with the next player."
+      player.tell "Thanks #{name}, we're waiting to match you with the next player."
 
   start: ->
     @server.on "connection", @onConnect

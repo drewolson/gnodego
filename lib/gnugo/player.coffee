@@ -1,7 +1,7 @@
 events = require "events"
 
 class Player extends events.EventEmitter
-  constructor: (@socket, @name) ->
+  constructor: (@socket) ->
     @socket.on "data", (data) =>
       @emit "play", data
 
