@@ -18,15 +18,26 @@ describe "Game", ->
       engine: @engine
 
   describe "integration", ->
-    it "plays a game", ->
-      game = new Game
-        black: @drew
-        white: @william
+    it "plays a game", (done) ->
+      @timeout = 5000
+      g = new Game
+        black: @william
+        white: @drew
 
-      game.start (err, response) ->
-        game.play "C4", (err, response) ->
-          game.play "C6", (err, response) ->
-            assert.ok not err?
+      g.start (e, r) ->
+        g.play "A4", (e, r) -> g.play "A5", (e, r) ->
+            g.play "B4", (e, r) -> g.play "B5", (e, r) ->
+                g.play "C4", (e, r) -> g.play "C5", (e, r) ->
+                    g.play "D4", (e, r) -> g.play "D5", (e, r) ->
+                        g.play "E4", (e, r) -> g.play "E5", (e, r) ->
+                            g.play "F4", (e, r) -> g.play "F5", (e, r) ->
+                                g.play "G4", (e, r) -> g.play "G5", (e, re) ->
+                                    g.play "H4", (e, r) -> g.play "H5", (e, r) ->
+                                        g.play "J4", (e, r) -> g.play "J5", (e, r) ->
+                                            g.play "pass", (e, r) -> g.play "pass", (e, r) ->
+                                                assert.ok "W+9.0" in g.players['black'].messages
+                                                assert.ok "W+9.0" in g.players['white'].messages
+                                                done()
 
   describe "start", ->
     it "sets the board size to default", ->
@@ -93,6 +104,16 @@ describe "Game", ->
         assert.ok "play black C6" in @engine.commands
         done()
 
+    context "player passes", ->
+      it "notes that the player passed", ->
+        @game.play "pass", (response) =>
+          assert.ok @game.lastPlayerPassed
+
+      it "shows the score if both players pass", ->
+        @game.play "pass", (response) =>
+          @game.play "pass", (response) =>
+            assert.ok "final_score" in @engine.commands
+
     context "engine accepts command",  ->
       it "toggles the active player", (done) ->
         @game.play "C6", (response) =>
@@ -106,6 +127,11 @@ describe "Game", ->
           assert.ok "success" in @drew.messages
           assert.ok "success" in @william.messages
           done()
+
+      it "resets the lastPlayerPassedState", ->
+        @game.play "pass", (response) =>
+          @game.play "C6", (response) =>
+            assert.ok not @game.lastPlayerPassed
 
       it "sets a listener on the new active player", ->
         @game.play "C6", (response) =>

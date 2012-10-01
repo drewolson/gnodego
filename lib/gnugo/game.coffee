@@ -6,6 +6,7 @@ class Game
     @inactiveColor = "white"
     @boardSize = boardSize or 9
     @engine = engine or new GameEngine
+    @lastPlayerPassed = false
     @players =
       black: black
       white: white
@@ -35,18 +36,32 @@ class Game
   onPlay: (move) =>
     @play move, (err, data) ->
 
-  play: (position, cb) ->
-    @engine.performCommands ["play #{@activeColor} #{position}", "showboard"], (err, data) =>
-      if err?
-        @activePlayer().tell err
-        @listenForPlay
-          informOpponent: false
-        cb err, null
-      else
-        @togglePlayers()
+  consecutivePasses: (position) =>
+    @lastPlayerPassed && position is "pass"
+
+  checkError: (err, cb, data, success) =>
+    if err?
+      @activePlayer().tell err
+      @listenForPlay
+        informOpponent: false
+      cb err, null
+    else
+      success(cb, data)
+
+  play: (position, cb) =>
+    position = position.toString().trim()
+    if @consecutivePasses(position)
+      @engine.performCommand "final_score", (err, data) =>
         @broadcast data
-        @listenForPlay()
         cb null, data
+    else
+      @engine.performCommands ["play #{@activeColor} #{position}", "showboard"], (err, data) =>
+        @checkError err, cb, data, (cb, data) =>
+          @lastPlayerPassed = position is "pass"
+          @broadcast data
+          @togglePlayers()
+          @listenForPlay()
+          cb null, data
 
   showBoard: (cb) ->
     @engine.performCommand "showboard", (err, data) ->
