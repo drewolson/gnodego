@@ -83,6 +83,10 @@ describe "Game", ->
       @game.listenForPlay()
       assert.ok "Your opponent is selecting a move." in @william.messages
 
+    it "does not tell the inactive player to wait for their opponent if so instructed", ->
+      @game.listenForPlay({informOpponent: false})
+      assert.ok "Your opponent is selecting a move." not in @william.messages
+
   describe "play", ->
     it "sends a move to the engine", (done) ->
       @game.play "C6", (response) =>

@@ -20,10 +20,17 @@ class Game
     for color, player of @players
       player.tell message
 
-  listenForPlay: ->
+  listenForPlay: (options) ->
+    if options?
+      informOpponent = options.informOpponent
+    else
+      informOpponent = true
+
     @activePlayer().once "play", @onPlay
     @activePlayer().prompt "Please select a move: "
-    @inactivePlayer().tell "Your opponent is selecting a move."
+
+    if informOpponent
+      @inactivePlayer().tell "Your opponent is selecting a move."
 
   onPlay: (move) =>
     @play move, (err, data) ->
@@ -32,7 +39,8 @@ class Game
     @engine.performCommands ["play #{@activeColor} #{position}", "showboard"], (err, data) =>
       if err?
         @activePlayer().tell err
-        @listenForPlay()
+        @listenForPlay
+          informOpponent: false
         cb err, null
       else
         @togglePlayers()

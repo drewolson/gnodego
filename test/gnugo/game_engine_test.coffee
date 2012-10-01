@@ -27,3 +27,11 @@ describe "GameEngine", ->
       engine.performCommands ["boardsize 9", "play black c3", "play white c6", "move_history"], (err, data) ->
         assert.equal "white C6\nblack C3", data
         done()
+
+    it "stops performing commands if one errors", (done) ->
+      engine = new GameEngine
+      engine.start()
+
+      engine.performCommands ["boardsize 9", "play black", "showboard"], (err, data) ->
+        assert.equal "invalid color or coordinate", err
+        done()

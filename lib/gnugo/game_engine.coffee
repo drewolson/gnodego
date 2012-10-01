@@ -24,11 +24,14 @@ class GameEngine
 
   performCommands: (commands, cb) ->
     @performCommand commands[0], (err, data) =>
-      rest = commands[1..-1]
-      if rest.length is 0
-        cb err, data
+      if err?
+        cb err, null
       else
-        @performCommands(rest, cb)
+        rest = commands[1..-1]
+        if rest.length is 0
+          cb err, data
+        else
+          @performCommands(rest, cb)
 
   start: ->
     bufferStream = new BufferStream
