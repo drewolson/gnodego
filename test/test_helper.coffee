@@ -1,6 +1,6 @@
 portfinder = require "portfinder"
 
-GameServer = require "../lib/gnugo/game_server"
+GameServer = require "../lib/gnodego/game_server"
 
 exports.withServer = (cb) ->
   portfinder.getPort (err, port) ->

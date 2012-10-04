@@ -1,7 +1,7 @@
 assert = require "assert"
 net = require "net"
 
-Player = require "../../lib/gnugo/player"
+Player = require "../../lib/gnodego/player"
 
 describe "Player", ->
   describe "event emission", ->

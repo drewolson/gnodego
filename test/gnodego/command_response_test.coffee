@@ -1,5 +1,5 @@
 assert = require "assert"
-CommandResponse = require "../../lib/gnugo/command_response"
+CommandResponse = require "../../lib/gnodego/command_response"
 
 describe "CommandResponse", ->
   describe "isSuccess", ->

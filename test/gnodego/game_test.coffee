@@ -1,7 +1,7 @@
 assert = require "assert"
 
-Game = require "../../lib/gnugo/game"
-Player = require "../../lib/gnugo/player"
+Game = require "../../lib/gnodego/game"
+Player = require "../../lib/gnodego/player"
 MockedEngine = require "../support/mocked_engine"
 MockedFailureEngine = require "../support/mocked_failure_engine"
 MockedPlayer = require "../support/mocked_player"

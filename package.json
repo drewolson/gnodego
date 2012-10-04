@@ -1,6 +1,6 @@
 {
-  "name": "gnugo-node",
-  "description": "tcp wrapper for gnugo",
+  "name": "gnodego",
+  "description": "node wrapper for gnugo",
   "version": "0.0.1",
   "author": "drew (drew@drewolson.org)",
   "directories" : {

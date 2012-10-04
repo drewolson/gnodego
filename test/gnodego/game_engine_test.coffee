@@ -1,5 +1,5 @@
 assert = require "assert"
-GameEngine = require "../../lib/gnugo/game_engine"
+GameEngine = require "../../lib/gnodego/game_engine"
 
 describe "GameEngine", ->
   describe "performCommand", ->

@@ -1,4 +1,4 @@
-GameEngine = require "../../lib/gnugo/game_engine"
+GameEngine = require "../../lib/gnodego/game_engine"
 
 class MockedEngine extends GameEngine
   constructor: ->
