@@ -10,6 +10,5 @@ class Player extends events.EventEmitter
 
   prompt: (message) ->
     @socket.write message
-    @socket.write "\n"
 
 module.exports = Player
