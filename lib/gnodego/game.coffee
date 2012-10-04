@@ -70,10 +70,6 @@ class Game
           @listenForPlay()
           cb null, data
 
-  showBoard: (cb) ->
-    @engine.performCommand "showboard", (err, data) ->
-      cb null, data
-
   start: (cb) ->
     @broadcast "The match between #{@players["black"].name} (black) and #{@players["white"].name} (white) has begun!"
     @engine.start()

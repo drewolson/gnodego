@@ -70,12 +70,6 @@ describe "Game", ->
     it "starts as white", ->
       assert.equal @game.inactivePlayer(), @william
 
-  describe "showBoard", ->
-    it "asks the engine to show the board", (done) ->
-      @game.showBoard (err, response) =>
-        assert.ok "showboard" in @engine.commands
-        done()
-
   describe "onPlay", ->
     it "calls play with the events payload", ->
       @game.onPlay "C6", (response) =>
