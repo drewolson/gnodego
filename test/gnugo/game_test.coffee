@@ -109,9 +109,15 @@ describe "Game", ->
         @game.play "pass", (response) =>
           assert.ok @game.lastPlayerPassed
 
+      it "lets the opponent know the player passed", ->
+        @game.play "pass", (response) =>
+          assert.ok "Your opponent passed." in @william.messages
+
       it "shows the score if both players pass", ->
         @game.play "pass", (response) =>
           @game.play "pass", (response) =>
+            assert.ok "Waiting for final score calculation..." in @drew.messages
+            assert.ok "Waiting for final score calculation..." in @william.messages
             assert.ok "final_score" in @engine.commands
 
     context "engine accepts command",  ->

@@ -50,7 +50,10 @@ class Game
 
   play: (position, cb) =>
     position = position.toString().trim()
+
     if @consecutivePasses(position)
+      @broadcast "Waiting for final score calculation..."
+
       @engine.performCommand "final_score", (err, data) =>
         @broadcast data
         cb null, data
@@ -58,6 +61,10 @@ class Game
       @engine.performCommands ["play #{@activeColor} #{position}", "showboard"], (err, data) =>
         @checkError err, cb, data, (cb, data) =>
           @lastPlayerPassed = position is "pass"
+
+          if @lastPlayerPassed
+            @inactivePlayer().tell "Your opponent passed."
+
           @broadcast data
           @togglePlayers()
           @listenForPlay()
