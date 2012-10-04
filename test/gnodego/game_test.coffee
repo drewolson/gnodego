@@ -6,7 +6,6 @@ MockedEngine = require "../support/mocked_engine"
 MockedFailureEngine = require "../support/mocked_failure_engine"
 MockedPlayer = require "../support/mocked_player"
 
-
 describe "Game", ->
   beforeEach ->
     @engine = new MockedEngine
@@ -60,7 +59,7 @@ describe "Game", ->
 
     it "sets a listener on the black player play event", ->
       @game.start (err, response) =>
-        assert.deepEqual ['play', @game.onPlay], @drew.listeners[0]
+        assert.deepEqual ['play', @game.play], @drew.listeners[0]
 
   describe "activePlayer", ->
     it "starts as black", ->
@@ -70,15 +69,10 @@ describe "Game", ->
     it "starts as white", ->
       assert.equal @game.inactivePlayer(), @william
 
-  describe "onPlay", ->
-    it "calls play with the events payload", ->
-      @game.onPlay "C6", (response) =>
-        assert.ok "play black C6" in @engine.commands
-
   describe "listenForPlay", ->
     it "sets a listener on the new active player", ->
       @game.listenForPlay()
-      assert.deepEqual ['play', @game.onPlay], @drew.listeners[0]
+      assert.deepEqual ['play', @game.play], @drew.listeners[0]
 
     it "tells the active player it is their move", ->
       @game.listenForPlay()
@@ -112,7 +106,11 @@ describe "Game", ->
           @game.play "pass", (response) =>
             assert.ok "Waiting for final score calculation..." in @drew.messages
             assert.ok "Waiting for final score calculation..." in @william.messages
+
             assert.ok "final_score" in @engine.commands
+
+            assert.ok "Thanks for playing." in @drew.messages
+            assert.ok "Thanks for playing." in @william.messages
 
     context "engine accepts command",  ->
       it "toggles the active player", (done) ->
@@ -135,7 +133,7 @@ describe "Game", ->
 
       it "sets a listener on the new active player", ->
         @game.play "C6", (response) =>
-          assert.deepEqual ['play', @game.onPlay], @william.listeners[0]
+          assert.deepEqual ['play', @game.play], @william.listeners[0]
 
     context "engine rejects command", ->
       beforeEach ->
@@ -158,4 +156,4 @@ describe "Game", ->
 
       it "relistens to the active player", ->
         @game.play "C6", (response) =>
-          assert.deepEqual ["play", @game.onPlay], @drew.listeners[0]
+          assert.deepEqual ["play", @game.play], @drew.listeners[0]

@@ -27,14 +27,11 @@ class Game
     else
       informOpponent = true
 
-    @activePlayer().once "play", @onPlay
+    @activePlayer().once "play", @play
     @activePlayer().prompt "Please select a move: "
 
     if informOpponent
       @inactivePlayer().tell "Your opponent is selecting a move."
-
-  onPlay: (move) =>
-    @play move, (err, data) ->
 
   consecutivePasses: (position) =>
     @lastPlayerPassed && position is "pass"
@@ -56,7 +53,9 @@ class Game
 
       @engine.performCommand "final_score", (err, data) =>
         @broadcast data
-        cb null, data
+        @broadcast "Thanks for playing."
+
+        cb null, data if cb?
     else
       @engine.performCommands ["play #{@activeColor} #{position}", "showboard"], (err, data) =>
         @checkError err, cb, data, (cb, data) =>
@@ -68,7 +67,7 @@ class Game
           @broadcast data
           @togglePlayers()
           @listenForPlay()
-          cb null, data
+          cb null, data if cb?
 
   start: (cb) ->
     @broadcast "The match between #{@players["black"].name} (black) and #{@players["white"].name} (white) has begun!"
