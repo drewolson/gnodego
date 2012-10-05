@@ -21,6 +21,16 @@ class Game
     for color, player of @players
       player.tell message
 
+  calculateFinalScore: (cb) ->
+    @broadcast "Waiting for final score calculation..."
+
+    @engine.performCommand "final_score", (err, data) =>
+      @broadcast data
+      @broadcast "Thanks for playing."
+      player.disconnect() for color, player of @players when not player.disconnected
+
+      cb null, data if cb?
+
   listenForPlay: (options) ->
     if options?
       informOpponent = options.informOpponent
@@ -49,14 +59,7 @@ class Game
     position = position.toString().trim()
 
     if @consecutivePasses(position)
-      @broadcast "Waiting for final score calculation..."
-
-      @engine.performCommand "final_score", (err, data) =>
-        @broadcast data
-        @broadcast "Thanks for playing."
-        player.disconnect() for color, player of @players when not player.disconnected
-
-        cb null, data if cb?
+      @calculateFinalScore(cb)
     else
       @engine.performCommands ["play #{@activeColor} #{position}", "showboard"], (err, data) =>
         @checkError err, cb, data, (cb, data) =>
