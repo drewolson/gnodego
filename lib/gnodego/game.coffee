@@ -54,6 +54,8 @@ class Game
       @engine.performCommand "final_score", (err, data) =>
         @broadcast data
         @broadcast "Thanks for playing."
+        for color, player of @players
+          player.disconnect()
 
         cb null, data if cb?
     else

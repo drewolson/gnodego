@@ -112,6 +112,14 @@ describe "Game", ->
             assert.ok "Thanks for playing." in @drew.messages
             assert.ok "Thanks for playing." in @william.messages
 
+
+      it "disconnects the players if both players pass", ->
+        @game.play "pass", (response) =>
+          @game.play "pass", (response) =>
+            assert.ok @drew.disconnected
+            assert.ok @william.disconnected
+
+
     context "engine accepts command",  ->
       it "toggles the active player", (done) ->
         @game.play "C6", (response) =>

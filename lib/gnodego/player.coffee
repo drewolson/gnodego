@@ -11,4 +11,7 @@ class Player extends events.EventEmitter
   prompt: (message) ->
     @socket.write message
 
+  disconnect: ->
+    @socket.destroy()
+
 module.exports = Player

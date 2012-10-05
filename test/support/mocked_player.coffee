@@ -2,6 +2,7 @@ class MockedPlayer
   constructor: (@name)->
     @messages = []
     @listeners = []
+    @disconnected = false
 
   prompt: (message) ->
     @messages.push message
@@ -11,5 +12,8 @@ class MockedPlayer
 
   once: (event, cb) ->
     @listeners.push [event, cb]
+
+  disconnect: ->
+    @disconnected = true
 
 module.exports = MockedPlayer

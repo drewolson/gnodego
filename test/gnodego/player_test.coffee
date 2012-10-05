@@ -13,3 +13,13 @@ describe "Player", ->
         done()
       socket.emit "data", "C6"
 
+  describe "disconnect", ->
+    it "closes the socket", (done)->
+      socket = new net.Socket
+      player = new Player socket, "william"
+      socket.on 'close', ->
+        assert.ok true
+        done()
+      player.disconnect()
+
+
