@@ -70,7 +70,15 @@ class Game
           @listenForPlay()
           cb null, data if cb?
 
+  playerDisconnect: =>
+    for color, player of @players
+      if not player.disconnected
+        player.tell "\nYour opponent disconnected, you win!"
+        player.disconnect()
+
   start: (cb) ->
+    player.on("disconnect", @playerDisconnect) for color, player of @players
+
     @broadcast "The match between #{@players["black"].name} (black) and #{@players["white"].name} (white) has begun!"
     @engine.start()
     @engine.performCommands ["boardsize #{@boardSize}", "showboard"], (err, data) =>

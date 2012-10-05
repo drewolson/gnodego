@@ -10,6 +10,9 @@ class MockedPlayer
   tell: (message) ->
     @messages.push message
 
+  on: (event, cb) ->
+    @listeners.push [event, cb]
+
   once: (event, cb) ->
     @listeners.push [event, cb]
 

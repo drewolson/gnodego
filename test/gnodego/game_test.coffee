@@ -38,6 +38,21 @@ describe "Game", ->
                                                 assert.ok "W+9.0" in g.players['white'].messages
                                                 done()
 
+  describe "playerDisconnect", ->
+    it "notifies and disconnects the opponent of the disconnected player", ->
+      drew = new MockedPlayer "drew"
+      william = new MockedPlayer "william"
+      game = new Game
+        black: drew
+        white: william
+
+      drew.disconnect()
+
+      game.playerDisconnect()
+
+      assert.ok william.disconnected
+      assert.ok "\nYour opponent disconnected, you win!" in william.messages
+
   describe "start", ->
     it "sets the board size to default", ->
       @game.start (err, response) =>
@@ -59,7 +74,12 @@ describe "Game", ->
 
     it "sets a listener on the black player play event", ->
       @game.start (err, response) =>
-        assert.deepEqual ['play', @game.play], @drew.listeners[0]
+        assert.deepEqual ['play', @game.play], @drew.listeners[1]
+
+    it "sets a listener on both players' disconnect events", ->
+      @game.start (err, response) =>
+        assert.deepEqual ['disconnect', @game.playerDisconnect], @drew.listeners[0]
+        assert.deepEqual ['disconnect', @game.playerDisconnect], @drew.listeners[0]
 
   describe "activePlayer", ->
     it "starts as black", ->
