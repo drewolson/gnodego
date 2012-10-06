@@ -65,8 +65,7 @@ class Game
         @checkError err, cb, data, (cb, data) =>
           @lastPlayerPassed = position is "pass"
 
-          if @lastPlayerPassed
-            @inactivePlayer().tell "Your opponent passed."
+          @inactivePlayer().tell "Your opponent's move: #{position}"
 
           @broadcast data
           @togglePlayers()

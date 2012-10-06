@@ -112,16 +112,23 @@ describe "Game", ->
         assert.ok "play black C6" in @engine.commands
         done()
 
+    it "lets the opponenet know that you moved", (done) ->
+      @game.play "C6", (response) =>
+        assert.ok "Your opponent's move: C6" in @william.messages
+        done()
+
     context "player passes", ->
-      it "notes that the player passed", ->
+      it "notes that the player passed", (done) ->
         @game.play "pass", (response) =>
           assert.ok @game.lastPlayerPassed
+          done()
 
-      it "lets the opponent know the player passed", ->
+      it "lets the opponent know the player passed", (done) ->
         @game.play "pass", (response) =>
-          assert.ok "Your opponent passed." in @william.messages
+          assert.ok "Your opponent's move: pass" in @william.messages
+          done()
 
-      it "shows the score if both players pass", ->
+      it "shows the score if both players pass", (done) ->
         @game.play "pass", (response) =>
           @game.play "pass", (response) =>
             assert.ok "Waiting for final score calculation..." in @drew.messages
@@ -131,6 +138,7 @@ describe "Game", ->
 
             assert.ok "Thanks for playing." in @drew.messages
             assert.ok "Thanks for playing." in @william.messages
+            done()
 
 
       it "disconnects the players if both players pass", ->
