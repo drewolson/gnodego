@@ -4,3 +4,4 @@ node_js:
 before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -qq gnugo
+script: PATH=/usr/games:$PATH npm test
