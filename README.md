@@ -15,3 +15,8 @@ Running
 ```bash
 ./bin/gnodego --port 8000
 ```
+
+Contributors
+------------
+
+* [wjdix](https://github.com/wjdix)
