@@ -15,6 +15,7 @@ class GameServer
 
   onConnect: (socket) =>
     player = new Player socket
+    player.on "disconnect", => @playerDisconnect player
     socket.once "data", (data) => @onName player, data.toString().trim()
     player.prompt "Please enter your name: "
 
@@ -32,6 +33,10 @@ class GameServer
     else
       @unmatchedPlayers.push player
       player.tell "Thanks #{name}, we're waiting to match you with the next player."
+
+  playerDisconnect: (player) ->
+    index = @unmatchedPlayers.indexOf(player)
+    @unmatchedPlayers.splice(index, 1) if index > -1
 
   start: ->
     @server.on "connection", @onConnect

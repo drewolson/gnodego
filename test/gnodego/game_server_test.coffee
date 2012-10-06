@@ -19,6 +19,24 @@ describe "GameServer", ->
 
         socket.connect port
 
+    describe "playerDisconnect", ->
+      it "removes the player from unmatchedPlayers", (done) ->
+        helper.withServer (server, port) ->
+          socket = new net.Socket
+          socket.once "data", (data) ->
+            assert.equal "Please enter your name: ", data.toString()
+
+            socket.write "Drew\n"
+            socket.once "data", (data) ->
+              player = server.unmatchedPlayers[0]
+              player.on "disconnect", ->
+                assert.equal 0, server.unmatchedPlayers.length
+                done()
+
+              socket.end()
+
+          socket.connect port
+
     describe "unmatchedPlayers", ->
       it "adds the player to unmatched players if there is no one available for a match", (done) ->
         helper.withServer (server, port) ->
