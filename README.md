@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/drewolson/gnodego.png)](https://travis-ci.org/drewolson/gnodego)
+
 Overview
 ========
 
