@@ -1,4 +1,4 @@
-assert = require "assert"
+expect = require("chai").expect
 net = require "net"
 
 helper = require "../test_helper"
@@ -10,11 +10,11 @@ describe "GameServer", ->
       helper.withServer (server, port) ->
         socket = new net.Socket
         socket.once "data", (data) ->
-          assert.equal "Please enter your name: ", data.toString()
+          expect(data.toString()).to.equal "Please enter your name: "
 
           socket.write "Drew\n"
           socket.once "data", (data) ->
-            assert.equal "Thanks Drew, we're waiting to match you with the next player.\n\n", data.toString()
+            expect(data.toString()).to.equal "Thanks Drew, we're waiting to match you with the next player.\n\n"
             done()
 
         socket.connect port
@@ -24,13 +24,13 @@ describe "GameServer", ->
         helper.withServer (server, port) ->
           socket = new net.Socket
           socket.once "data", (data) ->
-            assert.equal "Please enter your name: ", data.toString()
+            expect(data.toString()).to.equal "Please enter your name: "
 
             socket.write "Drew\n"
             socket.once "data", (data) ->
               player = server.unmatchedPlayers[0]
               player.on "disconnect", ->
-                assert.equal 0, server.unmatchedPlayers.length
+                expect(server.unmatchedPlayers).to.be.empty
                 done()
 
               socket.end()
@@ -42,12 +42,12 @@ describe "GameServer", ->
         helper.withServer (server, port) ->
           socket = new net.Socket
           socket.once "data", (data) ->
-            assert.equal "Please enter your name: ", data.toString()
+            expect(data.toString()).to.equal "Please enter your name: "
 
             socket.write "Drew\n"
             socket.once "data", (data) ->
               player = server.findUnmatchedPlayer "Drew"
-              assert.equal "Drew", player.name
+              expect(player.name).to.equal "Drew"
               done()
 
           socket.connect port
@@ -58,16 +58,16 @@ describe "GameServer", ->
 
           socket = new net.Socket
           socket.once "data", (data) ->
-            assert.equal "Please enter your name: ", data.toString()
+            expect(data.toString()).to.equal "Please enter your name: "
 
             socket.write "Drew\n"
             socket.once "data", (data) ->
-              assert.ok /Thanks Drew, you've been matched with William\./.test(data.toString())
-              assert.equal server.unmatchedPlayers.length, 0
+              expect(data.toString()).to.match /Thanks Drew, you've been matched with William\./
+              expect(server.unmatchedPlayers).to.be.empty
 
               game = server.games[0]
 
-              assert.equal game.players.white.name, "Drew"
+              expect(game.players.white.name).to.equal "Drew"
               done()
 
           socket.connect port
@@ -96,8 +96,8 @@ describe "GameServer", ->
 1 . . . . . . . . . 1     BLACK (X) has captured 0 stones
   A B C D E F G H J"
                 actualBoardState = william.messages[1].replace(/\r\n|\r|\n|\s$|^\s/gm, '')
-                assert.equal welcomeBroadcast.trim(), william.messages[0]
-                assert.equal boardState, actualBoardState
+                expect(welcomeBroadcast.trim()).to.equal william.messages[0]
+                expect(actualBoardState).to.equal actualBoardState
                 done()
 
           socket.connect port

@@ -1,4 +1,4 @@
-assert = require "assert"
+expect = require("chai").expect
 net = require "net"
 
 Player = require "../../lib/gnodego/player"
@@ -9,7 +9,7 @@ describe "Player", ->
       socket = new net.Socket
       player = new Player socket, "william"
       player.once "play", (message) ->
-        assert.equal message, "C6"
+        expect(message).to.equal "C6"
         done()
       socket.emit "data", "C6"
 
@@ -17,7 +17,7 @@ describe "Player", ->
       socket = new net.Socket
       player = new Player socket, "william"
       player.once "disconnect", ->
-        assert.ok player.disconnected
+        expect(player.disconnected).to.be.true
         done()
 
       socket.emit "close"
@@ -27,7 +27,7 @@ describe "Player", ->
       socket = new net.Socket
       player = new Player socket, "william"
       socket.on 'close', ->
-        assert.ok true
+        expect(true).to.be.true
         done()
 
       player.disconnect()
@@ -37,4 +37,4 @@ describe "Player", ->
       player = new Player socket, "william"
       player.disconnect()
 
-      assert.ok player.disconnected
+      expect(player.disconnected).to.be.true

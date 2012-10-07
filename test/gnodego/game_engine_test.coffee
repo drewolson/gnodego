@@ -1,4 +1,4 @@
-assert = require "assert"
+expect = require("chai").expect
 GameEngine = require "../../lib/gnodego/game_engine"
 
 describe "GameEngine", ->
@@ -8,7 +8,7 @@ describe "GameEngine", ->
       engine.start()
 
       engine.performCommand "protocol_version", (err, data) ->
-        assert.equal "2", data
+        expect(data).to.equal "2"
         done()
 
   describe "performCommands", ->
@@ -17,7 +17,7 @@ describe "GameEngine", ->
       engine.start()
 
       engine.performCommands ["protocol_version"], (err, data) ->
-        assert.equal "2", data
+        expect(data).to.equal "2"
         done()
 
     it "plays a game of go", (done) ->
@@ -25,7 +25,7 @@ describe "GameEngine", ->
       engine.start()
 
       engine.performCommands ["boardsize 9", "play black c3", "play white c6", "move_history"], (err, data) ->
-        assert.equal "white C6\nblack C3", data
+        expect(data).to.equal "white C6\nblack C3"
         done()
 
     it "stops performing commands if one errors", (done) ->
@@ -33,5 +33,5 @@ describe "GameEngine", ->
       engine.start()
 
       engine.performCommands ["boardsize 9", "play black", "showboard"], (err, data) ->
-        assert.equal "invalid color or coordinate", err
+        expect(err).to.equal "invalid color or coordinate"
         done()
