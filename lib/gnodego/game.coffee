@@ -46,15 +46,6 @@ class Game
   consecutivePasses: (position) =>
     @lastPlayerPassed && position is "pass"
 
-  checkError: (err, cb, data, success) =>
-    if err?
-      @activePlayer().tell err
-      @listenForPlay
-        informOpponent: false
-      cb err, null
-    else
-      success(cb, data)
-
   play: (position, cb) =>
     position = position.toString().trim()
 
@@ -62,7 +53,11 @@ class Game
       @calculateFinalScore(cb)
     else
       @engine.performCommands ["play #{@activeColor} #{position}", "showboard"], (err, data) =>
-        @checkError err, cb, data, (cb, data) =>
+        if err?
+          @activePlayer().tell err
+          @listenForPlay
+            informOpponent: false
+        else
           @lastPlayerPassed = position is "pass"
 
           @inactivePlayer().tell "Your opponent's move: #{position}"
@@ -70,7 +65,8 @@ class Game
           @broadcast data
           @togglePlayers()
           @listenForPlay()
-          cb null, data if cb?
+
+        cb err, data if cb?
 
   playerDisconnect: =>
     for color, player of @players

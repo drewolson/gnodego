@@ -107,6 +107,10 @@ describe "Game", ->
       expect(@drew.messages).to.not.include "Your opponent is selecting a move."
 
   describe "play", ->
+    it "can handle not receiving a callback", ->
+      @game.play "C6"
+      expect(@engine.commands).to.include "play black C6"
+
     it "sends a move to the engine", (done) ->
       @game.play "C6", (response) =>
         expect(@engine.commands).to.include "play black C6"
