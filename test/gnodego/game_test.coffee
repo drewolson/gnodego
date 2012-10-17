@@ -18,7 +18,7 @@ describe "Game", ->
 
   describe "integration", ->
     it "plays a game", (done) ->
-      @timeout = 5000
+      @timeout(9000)
       g = new Game
         black: @william
         white: @drew
@@ -30,13 +30,17 @@ describe "Game", ->
               g.play "D4", (e, r) -> g.play "D5", (e, r) ->
                 g.play "E4", (e, r) -> g.play "E5", (e, r) ->
                   g.play "F4", (e, r) -> g.play "F5", (e, r) ->
-                    g.play "G4", (e, r) -> g.play "G5", (e, re) ->
+                    g.play "G4", (e, r) -> g.play "G5", (e, r) ->
                       g.play "H4", (e, r) -> g.play "H5", (e, r) ->
                         g.play "J4", (e, r) -> g.play "J5", (e, r) ->
-                          g.play "pass", (e, r) -> g.play "pass", (e, r) ->
-                            expect(g.players["black"].messages).to.include "W+9.0"
-                            expect(g.players["white"].messages).to.include "W+9.0"
-                            done()
+                          g.play "K4", (e, r) -> g.play "K5", (e, r) ->
+                            g.play "L4", (e, r) -> g.play "L5", (e,r) ->
+                              g.play "M4", (e,r) -> g.play "M5", (e,r) ->
+                                g.play "N4", (e,r) -> g.play "N5", (e,r) ->
+                                    g.play "pass", (e, r) -> g.play "pass", (e, r) ->
+                                      expect(g.players["black"].messages).to.include "W+13.0"
+                                      expect(g.players["white"].messages).to.include "W+13.0"
+                                      done()
 
   describe "playerDisconnect", ->
     it "notifies and disconnects the opponent of the disconnected player", ->
@@ -56,7 +60,7 @@ describe "Game", ->
   describe "start", ->
     it "sets the board size to default", ->
       @game.start (err, response) =>
-        expect(@engine.commands).to.include "boardsize 9"
+        expect(@engine.commands).to.include "boardsize 13"
 
     it "shows the board", ->
       @game.start (err, response) =>
