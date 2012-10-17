@@ -4,7 +4,7 @@ class Game
   constructor: ({black: black, white: white, engine: engine, boardSize: boardSize}) ->
     @activeColor = "black"
     @inactiveColor = "white"
-    @boardSize = boardSize or 9
+    @boardSize = boardSize or 13
     @engine = engine or new GameEngine
     @lastPlayerPassed = false
     @players =
