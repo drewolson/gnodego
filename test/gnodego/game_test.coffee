@@ -4,6 +4,7 @@ Game = require "../../lib/gnodego/game"
 Player = require "../../lib/gnodego/player"
 MockedEngine = require "../support/mocked_engine"
 MockedFailureEngine = require "../support/mocked_failure_engine"
+MockedScoreEngine = require "../support/mocked_score_engine"
 MockedPlayer = require "../support/mocked_player"
 
 describe "Game", ->
@@ -16,31 +17,19 @@ describe "Game", ->
       white: @william
       engine: @engine
 
-  describe "integration", ->
+  describe "calculateFinalScore", ->
     it "plays a game", (done) ->
-      @timeout(9000)
       g = new Game
         black: @william
         white: @drew
+        engine: new MockedScoreEngine
 
       g.start (e, r) ->
-        g.play "A4", (e, r) -> g.play "A5", (e, r) ->
-          g.play "B4", (e, r) -> g.play "B5", (e, r) ->
-            g.play "C4", (e, r) -> g.play "C5", (e, r) ->
-              g.play "D4", (e, r) -> g.play "D5", (e, r) ->
-                g.play "E4", (e, r) -> g.play "E5", (e, r) ->
-                  g.play "F4", (e, r) -> g.play "F5", (e, r) ->
-                    g.play "G4", (e, r) -> g.play "G5", (e, r) ->
-                      g.play "H4", (e, r) -> g.play "H5", (e, r) ->
-                        g.play "J4", (e, r) -> g.play "J5", (e, r) ->
-                          g.play "K4", (e, r) -> g.play "K5", (e, r) ->
-                            g.play "L4", (e, r) -> g.play "L5", (e,r) ->
-                              g.play "M4", (e,r) -> g.play "M5", (e,r) ->
-                                g.play "N4", (e,r) -> g.play "N5", (e,r) ->
-                                    g.play "pass", (e, r) -> g.play "pass", (e, r) ->
-                                      expect(g.players["black"].messages).to.include "W+13.0"
-                                      expect(g.players["white"].messages).to.include "W+13.0"
-                                      done()
+        g.play "pass", (e, r) ->
+          g.play "pass", (e, r) ->
+            expect(g.players["black"].messages).to.include "W+13.0"
+            expect(g.players["white"].messages).to.include "W+13.0"
+            done()
 
   describe "playerDisconnect", ->
     it "notifies and disconnects the opponent of the disconnected player", ->
